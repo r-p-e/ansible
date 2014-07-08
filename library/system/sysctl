@@ -219,6 +219,9 @@ class SysctlModule(object):
     # Run sysctl -p
     def reload_sysctl(self):
         # do it
+        if get_platform().lower() == 'openbsd':
+            # openbsd doesn't support -p and has no sysctl service
+            return 0
         if get_platform().lower() == 'freebsd':
             # freebsd doesn't support -p, so reload the sysctl service
             rc,out,err = self.module.run_command('/etc/rc.d/sysctl reload')
